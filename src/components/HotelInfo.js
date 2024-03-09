@@ -58,7 +58,7 @@ export const HotelInfo = () => {
           </p>
           <ul>
             {accessibilityData.map((feature) => (
-              <li key={feature}>{feature}</li>
+              <li key={feature.name}>{feature.name}</li>
             ))}
           </ul>
         </section>
