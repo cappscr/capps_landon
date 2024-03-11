@@ -1,12 +1,26 @@
-import welcomeImagesData from './data/welcomeImages.json'
+import { useState, useEffect } from 'react';
+// import welcomeImagesData from './data/welcomeImages.json';
 
 export const Welcome = () => {
+  const [welcomeImagesData, setWelcomeImagesData] = useState([]);
+
+  const loadWelcomeImagesData = async () => {
+    const response = await fetch(
+      'https://x2bho9vzta.execute-api.us-east-1.amazonaws.com/Production/gallery-links',
+    );
+    setWelcomeImagesData(await response.json());
+  };
+
+  useEffect(() => {
+    loadWelcomeImagesData();
+  }, []);
+
   return (
     <div className="scene" id="welcome">
       <article className="content">
         <div className="gallery">
           {welcomeImagesData.map((image) => {
-            if (image.class)
+            if (image.class !== 'no_class')
               return (
                 <img
                   key={image.src}
@@ -14,8 +28,8 @@ export const Welcome = () => {
                   src={image.src}
                   alt={image.alt}
                 />
-              )
-            return <img key={image.src} src={image.src} alt={image.alt} />
+              );
+            return <img key={image.src} src={image.src} alt={image.alt} />;
           })}
         </div>
         <h1>Welcome to the Landon&nbsp;Hotel</h1>
@@ -33,5 +47,5 @@ export const Welcome = () => {
         </p>
       </article>
     </div>
-  )
-}
+  );
+};

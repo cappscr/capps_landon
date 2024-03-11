@@ -1,7 +1,30 @@
-import amenitiesData from './data/servicesAndAmenities.json'
-import accessibilityData from './data/accessibility.json'
+import { useState, useEffect } from 'react';
+// import amenitiesData from './data/servicesAndAmenities.json'
+// import accessibilityData from './data/accessibility.json'
 
 export const HotelInfo = () => {
+  const [amenitiesData, setAmenitiesData] = useState([]);
+  const [accessibilityData, setAccessibilityData] = useState([]);
+
+  const loadAmenitiesData = async () => {
+    const response = await fetch(
+      'https://x2bho9vzta.execute-api.us-east-1.amazonaws.com/Production/services',
+    );
+    setAmenitiesData(await response.json());
+  };
+
+  const loadAccessibilityData = async () => {
+    const response = await fetch(
+      'https://x2bho9vzta.execute-api.us-east-1.amazonaws.com/Production/accessibilities',
+    );
+    setAccessibilityData(await response.json());
+  };
+
+  useEffect(() => {
+    loadAccessibilityData();
+    loadAmenitiesData();
+  }, []);
+
   return (
     <div className="scene" id="hotelinfo">
       <article className="heading">
@@ -45,7 +68,7 @@ export const HotelInfo = () => {
           </p>
           <ul>
             {amenitiesData.map((amenity) => (
-              <li key={amenity}>{amenity}</li>
+              <li key={amenity.name}>{amenity.name}</li>
             ))}
           </ul>
         </section>
@@ -77,5 +100,5 @@ export const HotelInfo = () => {
         </p>
       </article>
     </div>
-  )
-}
+  );
+};
